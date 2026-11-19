@@ -1,0 +1,17 @@
+# Secrets: never share the key
+.env
+.env.*
+*.env
+
+# The agent's memory is personal: collected videos, transcripts, results
+workspace/*
+!workspace/.gitkeep
+
+# Job cards are personal too. Only the template is shared.
+jobs/*
+!jobs/job-card-template.md
+
+# System leftovers
+.DS_Store
+Thumbs.db
+node_modules/
