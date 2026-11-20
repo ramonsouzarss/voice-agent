@@ -10,7 +10,7 @@ account sound like itself. The goal is a portrait of the voice that someone
 else could imitate.
 
 ## Step 0: read the playbook first (always)
-Read `.claude/skills/instagram-playbook/SKILL.md`, mainly "casual tone".
+Read `skills/instagram-playbook/SKILL.md`, mainly "casual tone".
 Spoken language, broken sentences and slang are choices, not mistakes.
 
 ## Step 1: gather the transcripts

@@ -116,8 +116,9 @@ export async function runChecks() {
       state: "info",
       name: "Official Instagram route: not set up (optional)",
       detail:
-        "The tools read the public website. Only bring this up if Instagram keeps refusing and the person wants a lasting fix " +
-        "(docs/official-instagram-route.md).",
+        "No Instagram key is set up, so the tools read the public website. Offer the key when Instagram refuses, or when the " +
+        'person asks for it: the short tutorial is in AGENTS.md ("The Instagram key: the short tutorial"), the full guide in ' +
+        "docs/official-instagram-route.md.",
       fix: "",
     });
   }

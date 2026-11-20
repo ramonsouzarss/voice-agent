@@ -10,7 +10,7 @@ sentences of speech become a story that people follow and believe? The goal is
 to find the story shapes the account **repeats**.
 
 ## Step 0: read the playbook first (always)
-Read `.claude/skills/instagram-playbook/SKILL.md`, mainly "specific beats
+Read `skills/instagram-playbook/SKILL.md`, mainly "specific beats
 vague", promises in parts, and formats.
 
 ## Step 1: gather the transcripts

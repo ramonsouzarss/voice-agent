@@ -18,7 +18,7 @@ be:
   must be inside it, with real examples.
 
 ## Step 0: read the playbook first (always)
-Read `.claude/skills/instagram-playbook/SKILL.md`. The profile describes a
+Read `skills/instagram-playbook/SKILL.md`. The profile describes a
 voice that works in a video feed, not in a formal document.
 
 ## Step 1: gather the material

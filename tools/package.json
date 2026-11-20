@@ -1,7 +1,7 @@
 {
   "name": "voice-agent-toolbox",
   "version": "1.0.0",
-  "description": "The toolbox of the Voice Agent: three tools that list, download and transcribe Instagram videos. No dependencies to install.",
+  "description": "The toolbox of the Voice Agent: five tools that check the computer, list, download and transcribe Instagram videos, and open the folder of an account. No dependencies to install.",
   "type": "module",
   "main": "toolbox.js",
   "scripts": {

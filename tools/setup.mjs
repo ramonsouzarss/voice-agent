@@ -278,7 +278,7 @@ async function makeKeyFile(options) {
       waiting.map((l) => `paste your ${names[l]} right after the "=" on the line ${l}=`).join("; ") +
       ` (no spaces, no quotes). Then save and close the window, and tell me it is done.`,
     waiting.includes(META_LABEL)
-      ? `The Meta key is optional. How the person gets one: docs/official-instagram-route.md. If they do not want it after all, the empty line can simply stay.`
+      ? `The Meta key (the Instagram key) is optional. How the person gets one: give them the short tutorial from AGENTS.md ("The Instagram key: the short tutorial") in the chat, in their language; the full guide is docs/official-instagram-route.md. If they do not want it after all, the empty line can simply stay.`
       : ``,
     `You never type a key, never ask for one, and never open this file to look. ` +
       `When they say it is done, run: node tools/run-tool.mjs check_setup`,

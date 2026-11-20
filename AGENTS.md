@@ -163,7 +163,8 @@ Each refusal in a row makes the next pause longer.
 **What you never do:**
 
 - Call `list_videos` or `download_top_videos` again before that time. Not even
-  "just once to check".
+  "just once to check". (Two exceptions, both below: one try from another
+  internet connection, and after the person added a working Instagram key.)
 - Delete, edit, move or rename the pause note, even if the person asks. Say in
   one sentence that the note is what keeps a short block from becoming a long
   one.
@@ -207,21 +208,83 @@ out the ones that do not apply. Recommend one.
    `list_videos` one time with `newNetwork` set to `true`. The tool allows this
    once. If Instagram refuses again, go back to choices 1 to 4.
 
-6. **The official Instagram route, as a lasting fix** (optional). Offer it
-   only when refusals keep coming back or the person asks how to stop them.
+6. **Add an Instagram key, as a lasting fix** (optional). Offer it every time
+   Instagram refuses and no Instagram key is set up yet (`check_setup` says
+   whether one is). Recommend it when this was not the first refusal, or when
+   the person uses the agent often.
    Say it plainly: Instagram's owner, Meta, has an official door for programs
    that does not refuse like the website does. It needs a key from Meta that
    the person (or a technical colleague) makes once, in about 20 minutes, and
    renews about every two months. It only reads professional accounts, which
-   most brands are. If they want it: run `node tools/setup.mjs key meta`,
-   point them to `docs/official-instagram-route.md` for how to make the key,
-   and when they say it is in, run `check_setup`. After that `list_videos`
-   uses the official route by itself, also during a pause.
+   most brands and creators are. If they want it, follow "The Instagram key:
+   the short tutorial" below.
+
+### The Instagram key: the short tutorial
+
+Use this when the person chooses choice 6, or asks at any time how to add an
+Instagram key ("Instagram API key", "Meta key", "access token", "the official
+route": they all mean this). The full guide is
+`docs/official-instagram-route.md`. Read it before you start, and take the
+details from there.
+
+1. Run `node tools/setup.mjs key meta`. It adds the empty line
+   `META_ACCESS_TOKEN=` to the key file and opens the file on the person's
+   screen. Nothing else in the file changes.
+2. Give the person the short tutorial **in the chat, in their language**, as
+   numbered steps. Do not only point at the file. The steps:
+   1. Their own Instagram account must be a professional account (Business
+      or Creator), connected to a Facebook Page they manage.
+   2. At https://developers.facebook.com they log in, choose My Apps, then
+      Create App (use case "Other", type "Business", any name).
+   3. At https://developers.facebook.com/tools/explorer they choose that app,
+      add the permissions `instagram_basic`, `instagram_manage_insights`,
+      `pages_read_engagement` and `pages_show_list`, press Generate Access
+      Token, and in the window that opens tick their Page and their
+      Instagram account (a key made without ticking them works, but sees
+      nothing). Meta shows these screens in the person's language: the full
+      guide has a table with the names in Portuguese.
+   4. At https://developers.facebook.com/tools/debug/accesstoken they paste
+      the key, press Debug, then Extend Access Token, and copy the new key.
+      It then lasts about two months.
+   5. They paste the key right after `META_ACCESS_TOKEN=` in the file that is
+      open on their screen, with no spaces and no quotes, save and close.
+   6. They tell you it is done.
+3. Say honestly what the key does not do: it reads only professional
+   accounts, and some videos come without their file (licensed music, or
+   downloads turned off by the owner).
+4. If one step is unclear to them, explain that step from the full guide.
+   If it is all too much, suggest asking a technical colleague, and offer
+   choices 1 to 5 for today.
+5. When they say it is done, call `check_setup`. It says whether Meta
+   accepted the key and which Instagram account it belongs to. Never look in
+   the file. If the key is refused, say why in plain words (the guide has a
+   table "When something does not work") and run
+   `node tools/setup.mjs key open` so they can fix it.
+6. When the key works, call `list_videos` for the account of the job. With a
+   key it uses the official route by itself, also during a pause. This is not
+   "calling again before the time": the pause is about the public website
+   only. If the official route cannot read that account, the tool says so:
+   pass it on and go back to choices 1 to 5.
 
 **When the official route is set up**, some videos still come without their
-file (licensed music, or the owner turned downloads off). `download_top_videos`
-names them and gives their links. Do not try to get those files another way:
-offer choice 2 for exactly those videos, or continue without them.
+file (licensed music, or the owner turned downloads off). For some accounts
+that is more than half of the videos, and most of the top ones.
+`download_top_videos` names them and gives their links. Do not try to get
+those files another way. Say how many came with a file and how many did not,
+and offer these numbered choices:
+
+1. **Take the most liked videos that do come with a file** (works right now,
+   recommended when most of the top is missing). Call `download_top_videos`
+   again with a larger `count` (up to 30): it skips the videos without a file
+   and downloads the rest. Ask first if that means more than 20 downloads.
+   Then the result is no longer "the top 10": write in the job card and at
+   the top of every result which positions of the ranking were used.
+2. **The person brings the missing videos** (choice 2 above, for exactly
+   those videos). Give their links.
+3. **Wait for the public website**, when a pause is the only reason it was
+   not used. The website usually gives every file.
+4. **Continue with fewer videos**, only if 5 or more usable transcripts
+   remain.
 
 **When only part of the collection worked** (the list is there but some videos
 did not download): continue with what you have, list the links of the missing
@@ -299,8 +362,10 @@ Ask for these in one or two plain sentences, and only when they are needed:
 - Say yes or no when you ask to install or change something.
 - Paste their OpenAI key into the key file (`.env`), after the `=`. You make
   the file with the empty label and open it for them; they add the key.
-- Make a Meta key and paste it into the key file, only if they want the
-  official Instagram route (`docs/official-instagram-route.md`).
+- Make an Instagram key at Meta and paste it into the key file, only if they
+  want the official Instagram route. You give them the short tutorial (see
+  "The Instagram key: the short tutorial"); the full guide is
+  `docs/official-instagram-route.md`.
 - Type the computer's password, or press "allow", when the system asks during
   an install. Never ask them to tell you a password.
 - Install Node.js from https://nodejs.org themselves, only if you tried and
