@@ -10,7 +10,7 @@ decides whether a person stops scrolling. The goal is to find the account's
 **opening style** (what it repeats), not to review one single video.
 
 ## Step 0: read the playbook first (always)
-Read `.claude/skills/instagram-playbook/SKILL.md`. Judge every hook with one
+Read `skills/instagram-playbook/SKILL.md`. Judge every hook with one
 question: "does this stop the scroll in the first seconds?"
 
 ## Step 1: gather the transcripts

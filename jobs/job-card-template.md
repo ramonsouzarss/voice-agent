@@ -26,6 +26,11 @@
 > person the ways forward from AGENTS.md ("When Instagram refuses") and write
 > here which one they chose. Videos the person brings themselves, or text they
 > paste, count the same as collected ones.
+>
+> If the list came through the official Instagram route and some of the top
+> videos have no file, ask the person how to complete the set (AGENTS.md,
+> "When the official route is set up") and write here which positions of the
+> ranking were used in the end.
 
 ### Phase 2: understand (the skills do this)
 

@@ -84,3 +84,11 @@ You only see the **words** of a video (the transcript). You do not see the
 images, the music, the editing or the text on screen. A video with almost no
 words can still be very successful. Say so when it matters, and never guess
 what the pictures show.
+
+A transcript also holds **every voice** in the video and does not say who is
+speaking. When an account reacts to clips (a match, an interview, another
+creator's video), part of the words belong to the clip: a commentator, the
+person interviewed, people in the scene. Before you build a rule on a quote,
+ask whether the creator is the one saying it. Build the rules on the videos
+where the creator clearly speaks, say which videos are uncertain, and write
+this limit at the top of your result.

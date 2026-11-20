@@ -21,6 +21,7 @@ import { pipeline } from "node:stream/promises";
 import { Readable } from "node:stream";
 import path from "node:path";
 import { sleep, WORKSPACE } from "./workspace.js";
+import { getMetaToken } from "./settings.js";
 
 const WEB_APP_ID = "936619743392459";
 const PAGE_SIZE = 12;
@@ -135,7 +136,12 @@ export function pauseMessage(note) {
     `for another way in, and never delete or edit the pause note. ` +
     `The job is NOT stuck. Offer the person the ways forward from AGENTS.md ("When Instagram ` +
     `refuses"): use what is already collected, bring the videos themselves (open_folder), paste ` +
-    `the words in the chat, wait until the time above, or one try from another internet connection.`
+    `the words in the chat, wait until the time above, or one try from another internet connection.` +
+    (getMetaToken()
+      ? ``
+      : ` A lasting fix to offer as well: an Instagram key from Meta, which opens the official route and ` +
+        `works even during this pause. Give the person the short tutorial from AGENTS.md ("The Instagram ` +
+        `key: the short tutorial"; full guide: docs/official-instagram-route.md).`)
   );
 }
 

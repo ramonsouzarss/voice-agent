@@ -157,14 +157,19 @@ Mention it **once**, in one or two sentences, and let the person decide:
      `META_ACCESS_TOKEN=` in the key file (as a new line at the end if the
      file already exists, changing nothing else) and opens the file on their
      screen.
-  2. Tell them how to get the key: the steps are in
-     `docs/official-instagram-route.md`. Read that file and walk them through
-     it in their language, one step at a time. It needs a professional
-     Instagram account connected to a Facebook Page. If that sounds like too
-     much for them, suggest asking a technical colleague, and skip for now.
+  2. Tell them how to get the key. Give them the short tutorial in the chat,
+     in their language, as numbered steps: it is in `AGENTS.md` under "The
+     Instagram key: the short tutorial". The full guide, with every step in
+     detail, is `docs/official-instagram-route.md`: read it first, and use it
+     when a step is unclear to them. It needs a professional Instagram
+     account connected to a Facebook Page. If that sounds like too much for
+     them, suggest asking a technical colleague, and skip for now.
   3. When they say the key is pasted and saved, run
      `node tools/run-tool.mjs check_setup`. It says whether Meta accepted the
      key and which Instagram account it belongs to. Never look in the file.
+     If Meta refuses the key, the guide has a table "When something does not
+     work": say what applies in plain words, and run
+     `node tools/setup.mjs key open` so they can fix the key.
 
 ## Step 5: connect the toolbox to Claude Desktop
 

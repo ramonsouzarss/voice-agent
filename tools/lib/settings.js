@@ -24,16 +24,48 @@ function findSettingsFile() {
   return null;
 }
 
-export const SETTINGS_FILE = findSettingsFile();
+export let SETTINGS_FILE = null;
 
-if (SETTINGS_FILE) {
-  for (const line of fs.readFileSync(SETTINGS_FILE, "utf8").split(/\r?\n/)) {
-    const m = line.match(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
-    if (!m) continue;
-    const value = m[2].replace(/^["']|["']$/g, "").trim();
-    if (process.env[m[1]] === undefined) process.env[m[1]] = value;
+// The names that came from the key file (and not from the computer itself).
+const fromFile = new Set();
+
+// Reads the key file. This happens at the start, and again every time a tool
+// asks for a key: the toolbox can stay open for days, and the person may add
+// or replace a key in the meantime. Without this, a key pasted today would
+// only be seen after the app is closed and opened again.
+function readSettingsFile() {
+  SETTINGS_FILE = findSettingsFile();
+  const found = new Map();
+  if (SETTINGS_FILE) {
+    let text;
+    try {
+      text = fs.readFileSync(SETTINGS_FILE, "utf8");
+    } catch {
+      return; // the file is being saved right now: keep what we had
+    }
+    for (const line of text.split(/\r?\n/)) {
+      const m = line.match(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
+      if (!m || found.has(m[1])) continue;
+      found.set(m[1], m[2].replace(/^["']|["']$/g, "").trim());
+    }
+  }
+  for (const [name, value] of found) {
+    // A value the computer itself already had is never replaced.
+    if (process.env[name] === undefined || fromFile.has(name)) {
+      process.env[name] = value;
+      fromFile.add(name);
+    }
+  }
+  // A line the person removed from the file is forgotten here too.
+  for (const name of [...fromFile]) {
+    if (!found.has(name)) {
+      delete process.env[name];
+      fromFile.delete(name);
+    }
   }
 }
+
+readSettingsFile();
 
 // The labels a key file can hold. The first is needed, the second is optional.
 export const OPENAI_LABEL = "OPENAI_API_KEY";
@@ -42,6 +74,7 @@ export const META_LABEL = "META_ACCESS_TOKEN";
 // For the setup report: is there a settings file, and does it hold a key?
 // Says yes or no only. The keys themselves never leave this file.
 export function keyStatus() {
+  readSettingsFile();
   return {
     file: SETTINGS_FILE,
     hasKey: !!(process.env[OPENAI_LABEL] || "").trim(),
@@ -51,10 +84,12 @@ export function keyStatus() {
 
 // The optional key for the official Instagram route (Meta). Empty = not used.
 export function getMetaToken() {
+  readSettingsFile();
   return (process.env[META_LABEL] || "").trim();
 }
 
 export function getOpenAIKey() {
+  readSettingsFile();
   const key = (process.env.OPENAI_API_KEY || "").trim();
   if (!key) {
     throw new Error(
@@ -75,5 +110,6 @@ export const DEFAULT_TRANSCRIPTION_MODEL = "gpt-transcribe";
 export const BACKUP_TRANSCRIPTION_MODEL = "whisper-1";
 
 export function transcriptionModel() {
+  readSettingsFile();
   return (process.env.OPENAI_TRANSCRIBE_MODEL || DEFAULT_TRANSCRIPTION_MODEL).trim();
 }

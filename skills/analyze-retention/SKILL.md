@@ -10,7 +10,7 @@ viewer from leaving, and how does the video end? The goal is to find the
 techniques the account **repeats**, not to review one video.
 
 ## Step 0: read the playbook first (always)
-Read `.claude/skills/instagram-playbook/SKILL.md`, mainly ideas 3, 5 and 6.
+Read `skills/instagram-playbook/SKILL.md`, mainly ideas 3, 5 and 6.
 
 ## Step 1: gather the transcripts
 - **Text pasted in the chat:** use it directly.

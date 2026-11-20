@@ -30,6 +30,9 @@ const PAGE_SIZE = 50;
 const MEDIA_FIELDS =
   "id,caption,comments_count,like_count,view_count,media_type,media_product_type,media_url,permalink,timestamp";
 
+// What the key must be allowed to do (the person ticks these at Meta).
+const NEEDED_PERMISSIONS = ["instagram_basic", "instagram_manage_insights", "pages_read_engagement", "pages_show_list"];
+
 export function metaConfigured() {
   return !!getMetaToken();
 }
@@ -73,9 +76,10 @@ async function askMeta(pathAndQuery) {
   }
   if (e.code === 190 || /access token|session has expired/i.test(said)) {
     throw new MetaProblem(
-      `Meta did not accept the key (${said}). Meta keys stop working after about two months. ` +
-        `Ask the person to make a new one and put it on the line META_ACCESS_TOKEN= of their key file ` +
-        `(docs/official-instagram-route.md has the steps). You never read or write that key.`,
+      `Meta did not accept the key (${said}). Meta keys stop working after about two months; a key that was ` +
+        `copied only in part, or made on the "Instagram" page of the app instead of in the Graph API Explorer, ` +
+        `is refused too. Ask the person to make a new one and put it on the line META_ACCESS_TOKEN= of their ` +
+        `key file (docs/official-instagram-route.md has the steps). You never read or write that key.`,
       "key"
     );
   }
@@ -85,7 +89,8 @@ async function askMeta(pathAndQuery) {
   if ([10, 200, 803].includes(e.code) || /permission/i.test(said)) {
     throw new MetaProblem(
       `The Meta key does not have the needed permissions (${said}). ` +
-        `It needs: instagram_basic, instagram_manage_insights, pages_read_engagement, pages_show_list ` +
+        `It needs: instagram_basic, instagram_manage_insights, pages_read_engagement, pages_show_list, ` +
+        `and also ads_read when the person's Facebook Page is managed through a business portfolio ` +
         `(docs/official-instagram-route.md).`,
       "key"
     );
@@ -110,10 +115,36 @@ export async function metaAccount({ fresh = false } = {}) {
   const pages = await askMeta("me/accounts?fields=name,instagram_business_account{id,username}&limit=100");
   const page = (pages.data || []).find((p) => p.instagram_business_account?.id);
   if (!page) {
+    // Say exactly what is missing, so the person does not have to guess:
+    // which Facebook Pages the key can see, and which permissions it has.
+    // (Names of Pages and permissions are not secrets.)
+    const seen = (pages.data || []).map((p) => p.name).filter(Boolean);
+    let missing = [];
+    try {
+      const granted = await askMeta("me/permissions?limit=200");
+      const has = new Set((granted.data || []).filter((p) => p.status === "granted").map((p) => p.permission));
+      missing = NEEDED_PERMISSIONS.filter((p) => !has.has(p));
+    } catch {
+      // not being able to list the permissions is fine
+    }
+    const permissions =
+      missing.length > 0
+        ? ` The key is missing these permissions: ${missing.join(", ")}. The person adds them in the Graph API Explorer and presses Generate Access Token again.`
+        : ` The key has the four needed permissions.`;
     throw new MetaProblem(
-      "The Meta key works, but it is not linked to a professional Instagram account. " +
-        "The person's Instagram account must be a Business or Creator account connected to a Facebook Page " +
-        "(docs/official-instagram-route.md).",
+      seen.length === 0
+        ? "The Meta key works, but it does not see any Facebook Page." +
+            permissions +
+            " Other causes: in the window that opens after Generate Access Token the person did not tick their " +
+            "Facebook Page (they choose which Pages and Instagram accounts the key may see), or the Page is managed " +
+            "through a business portfolio (then the key also needs the permissions ads_read and business_management). " +
+            "(docs/official-instagram-route.md)"
+        : `The Meta key works and sees the Facebook Page(s) ${seen.slice(0, 5).join(", ")}, but no professional ` +
+            "Instagram account is connected to them." +
+            permissions +
+            " The person's Instagram account must be a Business or Creator account connected to one of those Pages, " +
+            "and in the window that opens after Generate Access Token they must also tick that Instagram account. " +
+            "(docs/official-instagram-route.md)",
       "key"
     );
   }

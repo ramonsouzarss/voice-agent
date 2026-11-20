@@ -38,7 +38,7 @@ message of the chat: `Read AGENTS.md and follow it.`
 | Node.js | The free program that runs the tools | The agent installs it after you say yes. If it cannot, it asks you to use the normal installer from https://nodejs.org |
 | FFmpeg (optional) | Makes listening faster and handles big videos | The agent offers it. Without it the agent still works with `.mp4` files up to 24 MB |
 | Your OpenAI key | It turns speech into text | The agent makes a small file with the line `OPENAI_API_KEY=` and opens it on your screen. **You** paste your key after the `=` and save. The agent never reads it |
-| A Meta key (optional) | Opens the official Instagram route, which is not refused like the website | Only if you want it. The agent adds the line `META_ACCESS_TOKEN=` to the same file; you make the key at Meta and paste it. See `docs/official-instagram-route.md` |
+| An Instagram key from Meta (optional) | Opens the official Instagram route, which is not refused like the website | Only if you want it. The agent adds the line `META_ACCESS_TOKEN=` to the same file; you make the key at Meta and paste it. See "Add an Instagram key" below |
 | The toolbox in Claude Desktop | So the Chat of Claude Desktop can use the agent too | The agent, after you say yes. Then you close and reopen Claude Desktop |
 | A final check | To know that everything really works | The agent |
 
@@ -67,17 +67,51 @@ until when Instagram is closed for it, and offers you these ways forward:
 5. **Try from another internet connection.** If you move to another network
    (home, another office, a phone hotspot), tell the agent. It may try once.
 
-6. **Set up the official Instagram route** (optional, a lasting fix). Meta,
-   the company behind Instagram, has an official door for programs that does
-   not refuse like the website does. It needs a key that you make once at
-   Meta (about 20 minutes) and renew about every two months, and it reads
-   only professional accounts, which most brands are. Tell the agent
-   `I want to use the official Instagram route`. The guide is in
-   `docs/official-instagram-route.md`.
+6. **Add an Instagram key** (optional, a lasting fix). Meta, the company
+   behind Instagram, has an official door for programs that does not refuse
+   like the website does. See the short tutorial just below.
 
 What the agent will not do: log in to Instagram, use download websites, or
 keep trying during a refusal. Trying again and again is what turns a short
 refusal into a long one.
+
+## Add an Instagram key (short tutorial)
+
+With a key from Meta the agent collects the videos through Instagram's
+official door, also on days when the website refuses. It is free, it takes
+about 20 minutes once, and the key is renewed about every two months.
+
+1. **Check two things on Instagram.** Your own Instagram account is a
+   professional account (Business or Creator), and it is connected to a
+   Facebook Page that you manage.
+2. **Make a Meta app.** Go to https://developers.facebook.com, log in with
+   the Facebook account that manages that Page, choose **My Apps**, then
+   **Create App**. If it asks for a use case choose **Other**, and for the
+   type choose **Business**. Any name is fine.
+3. **Make the key.** Open https://developers.facebook.com/tools/explorer.
+   Choose your app at the top right. Add the four permissions
+   `instagram_basic`, `instagram_manage_insights`, `pages_read_engagement`
+   and `pages_show_list`. Press **Generate Access Token** and, in the window
+   that opens, tick your Page and your Instagram account. A key made without
+   ticking them works, but sees nothing.
+4. **Make it last two months.** Open
+   https://developers.facebook.com/tools/debug/accesstoken, paste the key,
+   press **Debug**, then **Extend Access Token**. Copy the new key.
+5. **Give it to the agent.** Say `I want to add my Instagram key`. A small
+   text file opens on your screen with the line `META_ACCESS_TOKEN=`. Paste
+   the key right after the `=`, with no spaces and no quotes. Save and close.
+6. **Say `done`.** The agent checks the key and tells you which Instagram
+   account it belongs to. From then on it uses the official door by itself.
+
+Good to know: the key reads only professional accounts (most brands and
+creators are). A video with licensed music, or with downloads turned off by
+its owner, comes with its numbers but without its file. For some accounts
+that is more than half of the videos. The agent then asks what you prefer:
+work with the most liked videos that do come with a file, or bring the
+missing ones yourself. Meta shows its screens in the language of your
+Facebook account. Every step in detail, the names of the screens in
+Portuguese, and what to do when something does not work:
+`docs/official-instagram-route.md`.
 
 ## The agent in one picture
 
@@ -155,7 +189,11 @@ You can use any single part by itself, for example:
   a minute, so the app never gives up waiting. The agent calls them again
   until the batch is done.
 - The agent only knows the **words** of a video. It does not see images or
-  hear music.
+  hear music. It also cannot tell who is speaking: in a video that reacts to
+  a clip, part of the words belong to the clip. The agent says so in the
+  result.
+- You can add or replace a key at any time. The tools read the key file
+  again every time they need a key.
 - The agent never reads the keys in the `.env` file. The only thing it may
   do is put empty labels in that file for you: `OPENAI_API_KEY=` always, and
   `META_ACCESS_TOKEN=` if you want the official Instagram route. You paste
